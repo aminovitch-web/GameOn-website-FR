@@ -29,30 +29,30 @@ const regexEmail = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 function verifyFirstName() {
   if (!regexName.test(firstname.value)) {
     console.log("Prénom invalide");
-    firstname.style.border = "2px solid #e54858";
+    
     return false;
   }
-  firstname.style.border = "solid #279e7a";
+ 
   return true;
 }
 
 function verifyLastName() {
   if (!regexName.test(lastname.value)) {
     console.log("Nom invalide");
-    lastname.style.border = "2px solid #e54858";
+   
     return false;
   }
-  lastname.style.border = "solid #279e7a";
+ 
   return true;
 }
 
 function verifyEmail() {
   if (!regexEmail.test(email.value)) {
     console.log("Email invalide");
-    email.style.border = "2px solid #e54858";
+    
     return false;
   }
-  email.style.border = "solid #279e7a";
+ 
   return true;
 }
 
@@ -61,20 +61,20 @@ function verifyBirthDate() {
     const date= dateUser.getDate();
     const yearUser = dateUser.getFullYear();
     if(!yearUser){
-        birthdate.style.border = "2px solid #e54858";
+        
         return false;
     }
-    birthdate.style.border = "solid #279e7a";
+    
     return true;
 }
 
 function verifyQuantity() {
 
     if(!isNaN(quantity.value) && quantity.value == ""){
-        quantity.style.border = "2px solid #e54858";
+       
         return false;
     }
-    quantity.style.border = "solid #279e7a";
+    
     return true;
 }
 
