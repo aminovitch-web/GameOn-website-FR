@@ -13,27 +13,27 @@ const modalBtn = document.querySelectorAll(".modal-btn");
 const modalCloseBtn = document.getElementsByClassName("close");
 const formData = document.querySelectorAll(".formData");
 
-// launch modal event
+// évenements pour lancer le modal au click de l'utilisateur
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 
-// launch modal form
+// fonction pour lancer le modal
 function launchModal() {
   modalbg.style.display = "block";
 }
 
-//close modal event
+//évenement pour fermer le modal au click de l'utilisateur
 modalCloseBtn[0].addEventListener("click",closeModal);
 
-//  close modal form
+//  fonction pour fermer le modal
 
 function closeModal(){
   modalbg.style.display="none";
 }
 
 
-/// form validation
+/// Formulaire
 
-// get form fields
+// recuperer tous les champs du formulaire grace à leur Id
 const firstname = document.getElementById("first");
 const lastname = document.getElementById("last");
 const email = document.getElementById("email");
@@ -43,6 +43,8 @@ const allCheckboxCity = document.querySelectorAll('[id^="location"]');
 const termsConditions = document.getElementById("checkbox1");
 const nextEvents = document.getElementById("checkbox2");
 
+// age limite
+const limitAge = 18;
 // écouteur d'évenements pour chaque champs du formulaire
 
 firstname.addEventListener('input', verifyFirstName);
@@ -65,7 +67,7 @@ const termsConditionsError = "Vous devez vérifier que vous acceptez les termes 
 const regexName = /^[a-zA-Z]{2,}$/;
 const regexEmail = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 
-// fonctions pour vérifier les champs saisis par l'utilisateur
+// fonctions pour chaque champs pour vérifier les champs saisis par l'utilisateur
 function verifyFirstName() {
   if (!regexName.test(firstname.value)) {
     console.log("Prénom invalide");
@@ -100,10 +102,11 @@ function verifyEmail() {
 }
 
 function verifyBirthDate() {
+  const currentDate = new Date();
   const dateUser = new Date(birthdate.value);
   const date = dateUser.getDate();
   const yearUser = dateUser.getFullYear();
-  if (!yearUser) {
+  if (!yearUser || (currentDate.getFullYear() - yearUser) < limitAge) {
     birthdate.parentElement.setAttribute("data-error", birthdateMsgError);
     birthdate.parentElement.setAttribute("data-error-visible", true);
     return false;
@@ -111,6 +114,7 @@ function verifyBirthDate() {
   birthdate.parentElement.setAttribute("data-error-visible", false);
   return true;
 }
+
 
 function verifyQuantity() {
   if (!isNaN(quantity.value) && quantity.value === "") {
@@ -158,7 +162,7 @@ function success(){
   const form = document.querySelector('form');
   form.style.height="300px";
   form.innerHTML = '<div class="successMsg">Merci ! Votre réservation a été reçue.<br><button onclick="return closeModal()" class="btn-signup">Fermer</button></div>';
-
+  form.reset();
 
 }
 
