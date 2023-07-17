@@ -26,6 +26,11 @@ p {
   padding: 0.5vw;
 }
 
+.successMsg{
+  padding:30px;
+}
+
+
 img {
   padding-right: 1rem;
 }
