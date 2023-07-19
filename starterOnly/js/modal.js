@@ -28,10 +28,17 @@ modalCloseBtn[0].addEventListener("click",closeModal);
 
 function closeModal(){
   modalbg.style.display="none";
+  window.location.reload();
 }
 
 
 /// Formulaire
+
+const form = document.querySelector('form');
+
+//message succes
+
+succesMsg='<div class="successMsg">Merci ! Votre réservation a été reçue.<br><button onclick="return closeModal()" class="btn-signup">Fermer</button></div>'
 
 // recuperer tous les champs du formulaire grace à leur Id
 const firstname = document.getElementById("first");
@@ -104,7 +111,6 @@ function verifyEmail() {
 function verifyBirthDate() {
   const currentDate = new Date();
   const dateUser = new Date(birthdate.value);
-  const date = dateUser.getDate();
   const yearUser = dateUser.getFullYear();
   if (!yearUser || (currentDate.getFullYear() - yearUser) < limitAge) {
     birthdate.parentElement.setAttribute("data-error", birthdateMsgError);
@@ -159,10 +165,9 @@ function verifyTermsConditions() {
 }
 
 function success(){
-  const form = document.querySelector('form');
   form.style.height="300px";
-  form.innerHTML = '<div class="successMsg">Merci ! Votre réservation a été reçue.<br><button onclick="return closeModal()" class="btn-signup">Fermer</button></div>';
-  form.reset();
+  form.innerHTML = succesMsg;
+  
 
 }
 
@@ -182,6 +187,7 @@ function validate() {
     isQuantityValid &&
     isCheckboxCityValid
   ) {
+    form.reset();
     success();
     return true;
   } else {
