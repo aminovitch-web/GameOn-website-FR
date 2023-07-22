@@ -467,7 +467,8 @@ input[data-error]::after {
   height: 100%;
   display: block;
   padding: 0;
-  object-fit: cover;
+  overflow:hidden;
+  position:relative;
 }
 .copyrights {
   color: #fe142f;
