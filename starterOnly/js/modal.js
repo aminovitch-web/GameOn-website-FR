@@ -1,3 +1,4 @@
+// fonction qui permet d'afficher la navigation responsive
 function editNav() {
   var x = document.getElementById("myTopnav");
   if (x.className === "topnav") {
@@ -13,7 +14,7 @@ const modalBtn = document.querySelectorAll(".modal-btn");
 const modalCloseBtn = document.getElementsByClassName("close");
 const formData = document.querySelectorAll(".formData");
 
-// évenements pour lancer le modal au click de l'utilisateur
+// événements pour lancer le modal au clic de l'utilisateur
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 
 // fonction pour lancer le modal
@@ -21,26 +22,23 @@ function launchModal() {
   modalbg.style.display = "block";
 }
 
-//évenement pour fermer le modal au click de l'utilisateur
-modalCloseBtn[0].addEventListener("click",closeModal);
+// événement pour fermer le modal au clic de l'utilisateur
+modalCloseBtn[0].addEventListener("click", closeModal);
 
-//  fonction pour fermer le modal
-
-function closeModal(){
-  modalbg.style.display="none";
+// fonction pour fermer le modal
+function closeModal() {
+  modalbg.style.display = "none";
   window.location.reload();
 }
-
 
 /// Formulaire
 
 const form = document.querySelector('form');
 
-//message succes
+// message succès
+successMsg = '<div class="successMsg">Merci ! Votre réservation a été reçue.<br><button onclick="return closeModal()" class="btn-signup">Fermer</button></div>';
 
-succesMsg='<div class="successMsg">Merci ! Votre réservation a été reçue.<br><button onclick="return closeModal()" class="btn-signup">Fermer</button></div>'
-
-// recuperer tous les champs du formulaire grace à leur Id
+// récupérer tous les champs du formulaire grâce à leur Id
 const firstname = document.getElementById("first");
 const lastname = document.getElementById("last");
 const email = document.getElementById("email");
@@ -50,9 +48,9 @@ const allCheckboxCity = document.querySelectorAll('[id^="location"]');
 const termsConditions = document.getElementById("checkbox1");
 const nextEvents = document.getElementById("checkbox2");
 
-// age limite
+// âge limite
 const limitAge = 18;
-// écouteur d'évenements pour chaque champs du formulaire
+// écouteur d'événements pour chaque champ du formulaire
 
 firstname.addEventListener('input', verifyFirstName);
 lastname.addEventListener('input', verifyLastName);
@@ -62,11 +60,11 @@ quantity.addEventListener('input', verifyQuantity);
 const checkboxCityEvent = addEventListener('change', verifyCheckboxCity);
 const termsConditionsEvent = addEventListener('change', verifyTermsConditions);
 
-// message d'erreur champs de formulaire
+// message d'erreur pour les champs du formulaire
 const nameErrorMsg = "Veuillez entrer 2 caractères ou plus pour le champ du nom.";
-const emailErrorMsg = "vous devez entrer votre email.";
-const birthdateMsgError = "Vous devez entrer votre date de naissance";
-const quantityError = "Vous devez choisir une option";
+const emailErrorMsg = "Vous devez entrer votre email.";
+const birthdateMsgError = "Vous devez entrer votre date de naissance.";
+const quantityError = "Vous devez choisir une option.";
 const checkboxCityError = "Vous devez sélectionner une ville.";
 const termsConditionsError = "Vous devez vérifier que vous acceptez les termes et conditions.";
 
@@ -74,18 +72,22 @@ const termsConditionsError = "Vous devez vérifier que vous acceptez les termes 
 const regexName = /^[a-zA-Z]{2,}$/;
 const regexEmail = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
 
-// fonctions pour chaque champs pour vérifier les champs saisis par l'utilisateur
+// fonctions pour chaque champ pour vérifier les champs saisis par l'utilisateur
+
+// verifyFirstName : vérifie la saisie de l'utilisateur avec l'expression régulière pour le nom et utilise test()
 function verifyFirstName() {
   if (!regexName.test(firstname.value)) {
     console.log("Prénom invalide");
+    // modifie l'attribut html data-error, afin d'afficher un message, retourne faux et utilise test()
     firstname.parentElement.setAttribute("data-error", nameErrorMsg);
     firstname.parentElement.setAttribute("data-error-visible", true);
     return false;
   }
+  // enlève le message d'erreur et retourne vrai, car valide.
   firstname.parentElement.setAttribute("data-error-visible", false);
   return true;
 }
-
+// verifyLastName, vérifie le nom avec la même expression régulière que le prénom et utilise test()
 function verifyLastName() {
   if (!regexName.test(lastname.value)) {
     console.log("Nom invalide");
@@ -96,7 +98,7 @@ function verifyLastName() {
   lastname.parentElement.setAttribute("data-error-visible", false);
   return true;
 }
-
+// verifyEmail, vérifie que l'e-mail est d'un format correct avec l'expression régulière et utilise test()
 function verifyEmail() {
   if (!regexEmail.test(email.value)) {
     console.log("Email invalide");
@@ -107,7 +109,7 @@ function verifyEmail() {
   email.parentElement.setAttribute("data-error-visible", false);
   return true;
 }
-
+// vérifie la date de naissance avec l'objet date, il faut prendre l'année actuelle - l'année que l'utilisateur a saisie, et si c'est inférieur à la date limite, c'est invalide
 function verifyBirthDate() {
   const currentDate = new Date();
   const dateUser = new Date(birthdate.value);
@@ -120,10 +122,10 @@ function verifyBirthDate() {
   birthdate.parentElement.setAttribute("data-error-visible", false);
   return true;
 }
-
-
+// vérifie le nombre de tournois, doit être de valeur numérique, vérifie si  la valeur numérique ou si la valeur du champ saisi par l'utilisateur
+// est vide, la fonction trim permet de supprimer les espaces blanc.
 function verifyQuantity() {
-  if (!isNaN(quantity.value) && quantity.value === "") {
+  if (isNaN(quantity.value) || quantity.value.trim() === "") {
     quantity.parentElement.setAttribute("data-error", quantityError);
     quantity.parentElement.setAttribute("data-error-visible", true);
     return false;
@@ -131,16 +133,17 @@ function verifyQuantity() {
   quantity.parentElement.setAttribute("data-error-visible", false);
   return true;
 }
-
+// vérifie les cases à cocher des villes, initialise une variable isChecked à faux, puis toutes les cases à cocher seront parcourues avec foreach
+// vérifie ensuite qu'à chaque itération, la case est cochée, et change la variable en true
 function verifyCheckboxCity() {
-  let isChecked= false;
+  let isChecked = false;
 
   allCheckboxCity.forEach(function (checkbox) {
     if (checkbox.checked) {
       isChecked = true;
     }
   });
-
+  // puis si ce n'est pas valide, avec le [0], chaque itération est parcourue pour vérifier, puis affiche le message d'erreur
   if (!isChecked) {
     allCheckboxCity[0].parentElement.setAttribute("data-error", checkboxCityError);
     allCheckboxCity[0].parentElement.setAttribute("data-error-visible", true);
@@ -151,26 +154,25 @@ function verifyCheckboxCity() {
   return true;
 }
 
+// vérifier les termes et conditions, initialise une variable pour vérifier si c'est coché, et si la variable n'est pas valide, affiche le message d'erreur
 function verifyTermsConditions() {
-
   const isTermsAccepted = termsConditions.checked;
- 
-  if(!isTermsAccepted){
+  if (!isTermsAccepted) {
     termsConditions.parentElement.setAttribute("data-error", termsConditionsError);
     termsConditions.parentElement.setAttribute("data-error-visible", true);
-    return false;     
+    return false;
   }
   termsConditions.parentElement.setAttribute("data-error-visible", false);
   return true;
 }
-
-function success(){
-  form.style.height="300px";
-  form.innerHTML = succesMsg;
-  
-
+// fonction pour le message de succès, ajoute un message avec innerHTML, et modifie la taille de l'affichage
+function success() {
+  form.style.height = "300px";
+  form.innerHTML = successMsg;
 }
 
+// fonction qui est appelée au clic du bouton, permet la validation du formulaire, vérifie que toutes les fonctions retournent vrai avant d'afficher la fonction succès
+// réinitialise le formulaire avec form.reset()
 function validate() {
   const isFirstNameValid = verifyFirstName();
   const isLastNameValid = verifyLastName();
@@ -191,7 +193,6 @@ function validate() {
     success();
     return true;
   } else {
-    
     return false;
   }
 }
